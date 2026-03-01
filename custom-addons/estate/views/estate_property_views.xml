@@ -1,0 +1,122 @@
+<odoo>
+
+    <!-- Acciones -->     
+
+    <!-- Properties -->
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Estate Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>        
+    </record>
+    
+
+    <!-- Búsqueda -->
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <field name="name"/>
+                <field name="state"/>
+                <filter string="Available" name="state" domain="['|', ('state', '=', 'New'), ('state', '=', 'Offer Received')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Layout de la tabla Properties -->
+    <record id="estate_property_tree" model="ir.ui.view">
+        <field name="name">estate.property.tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Estate Properties">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="postcode"/>
+                <field name="date_availability"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="property_type_id"/>
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Layout del formulario Properties -->
+    <record id="estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property">
+                <sheet>
+                    <div class="oe_title">
+                        <div class="oe_edit_only">
+                            <label for="name"/>
+                        </div>
+                        <h1 class="mb32">
+                            <field name="name" class="mb16" placeholder="Name of the property"/>
+                        </h1>
+                        <field name="active" invisible="1"/>
+                    </div>
+
+                    <!-- Descripicon de la propiedad -->
+                    <group col='2' colspan='1'>
+                        <group>
+                            <field name="postcode" placeholder="Postcode"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <field name="best_price"/>
+                        </group>                      
+                    </group>
+
+                    <!-- Caracteristicas de la propiedad -->
+                    <notebook>
+                        <!--- Descripcion -->
+                        <page string="Description">
+                            <group col='2' colspan='1'>
+                                <group>
+                                    <field name="description" placeholder="Description..."/>
+                                    <field name="bedrooms"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                </group>
+                                <group>
+                                    <field name="living_area"/>
+                                    <field name="garden_area"/>
+                                    <field name="total_area"/>
+                                    <field name="garden_orientation"/>
+                                    <field name="active"/>
+                                    <field name="state"/>
+                                    <field name="property_type_id"/>
+                                </group>
+                            </group>
+                            <field name="tag_ids"/>
+                        </page>
+
+                        <!-- Offers -->
+                        <page string="Offers">
+                            <group>
+                                <field name="offers_ids">
+                                </field>
+                            </group>
+                        </page>
+                        
+                        <!--Other Info -->
+                        <page string="Other Info">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                    
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
