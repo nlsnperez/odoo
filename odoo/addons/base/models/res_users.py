@@ -331,6 +331,8 @@ class Users(models.Model):
     _inherits = {'res.partner': 'partner_id'}
     _order = 'name, login'
     _allow_sudo_commands = False
+    
+    
 
     def _check_company_domain(self, companies):
         if not companies:
@@ -411,6 +413,7 @@ class Users(models.Model):
                                  compute='_compute_accesses_count', compute_sudo=True)
     groups_count = fields.Integer('# Groups', help='Number of groups that apply to the current user',
                                   compute='_compute_accesses_count', compute_sudo=True)
+    property_ids = fields.One2many('estate.property', 'salesperson_id', string='Properties')
 
     _sql_constraints = [
         ('login_key', 'UNIQUE (login)', 'You can not have two users with the same login!')

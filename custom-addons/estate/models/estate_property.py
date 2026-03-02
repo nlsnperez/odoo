@@ -1,9 +1,11 @@
 from odoo import api, models, fields
+from odoo.exceptions import UserError
 
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
     
     name = fields.Char(required=True)
     description = fields.Text()
@@ -35,9 +37,7 @@ class Property(models.Model):
             ('sold', 'Sold'),
             ('canceled', 'Canceled')
         ],
-        required=True,
-        copy=False,
-        default='new'        
+        copy=False,       
     )
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
@@ -46,6 +46,11 @@ class Property(models.Model):
     offers_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     total_area = fields.Float(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price')
+    
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price of property should be greater than 0.'),
+        ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price of property should be greater than 0.'),
+    ]
     
     #Método para calcular el área total
     @api.depends('living_area', 'garden_area')
@@ -72,3 +77,35 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+            
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            percentage = record.expected_price * 0.9
+            if record.selling_price:
+                if record.selling_price < percentage:
+                    raise UserError('The selling price cannot be less than 90% of the expected price.')
+                
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_state(self):
+        for record in self:
+            if record.state != 'new' and record.state != 'canceled':
+                raise UserError('Cannot delete property unless is in "New" or "Canceled" state.')
+            
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError('The property is already canceled.')
+            elif record.state == 'sold':
+                raise UserError('The property is already sold.')
+            else:
+                record.state = 'canceled'
+    
+    def action_sold(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError('The property is already sold.')
+            elif record.state == 'canceled':
+                raise UserError('You cannot sell a canceled property.')
+            else:
+                record.state = 'sold'

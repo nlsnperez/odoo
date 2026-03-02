@@ -31,7 +31,7 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Estate Properties">
+            <tree string="Estate Properties" decoration-success="offers_ids != False">
                 <field name="name"/>
                 <field name="description"/>
                 <field name="postcode"/>
@@ -39,6 +39,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="property_type_id"/>
+                <field name="offers_ids" invisible="1"/>
             </tree>
         </field>
     </record>
@@ -49,6 +50,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+            <header invisible="state == 'sold'">
+                <button name="action_sold" type="object" string="Sold"/>
+                <button name="action_cancel" type="object" string="Cancel"/>
+            </header>
                 <sheet>
                     <div class="oe_title">
                         <div class="oe_edit_only">
@@ -86,16 +91,16 @@
                                     <field name="garden"/>
                                 </group>
                                 <group>
+                                    <field name="state" widget="statusbar"/>
                                     <field name="living_area"/>
-                                    <field name="garden_area"/>
+                                    <field name="garden_area" invisible="not garden"/>
                                     <field name="total_area"/>
                                     <field name="garden_orientation"/>
                                     <field name="active"/>
-                                    <field name="state"/>
                                     <field name="property_type_id"/>
                                 </group>
                             </group>
-                            <field name="tag_ids"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </page>
 
                         <!-- Offers -->
@@ -108,7 +113,7 @@
                         
                         <!--Other Info -->
                         <page string="Other Info">
-                            <group>
+                            <group >
                                 <field name="buyer_id"/>
                                 <field name="salesperson_id"/>
                             </group>
