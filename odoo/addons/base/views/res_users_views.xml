@@ -252,11 +252,6 @@
                                     <field name="signature" options="{'style-inline': true, 'codeview': true}"/>
                                 </group>
                             </page>
-                            <page string="Real Estate Properties" name="properties">
-                                <group>
-                                    <field name="property_ids" readonly="1"/>                                    
-                                </group>
-                            </page>
                         </notebook>
                     </sheet>
                 </form>

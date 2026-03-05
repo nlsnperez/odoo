@@ -6,7 +6,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>        
+        <field name="view_mode">tree,form,kanban</field>        
     </record>
     
 
@@ -124,4 +124,18 @@
             </form>
         </field>
     </record>
+
+    <!-- Kanban view -->
+    <record id="estate_property_kanban" model="ir.ui.view">
+        <kanban>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click">
+                        <field name="name"/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </record>
+
 </odoo>

@@ -42,7 +42,6 @@ from . import res_bank
 from . import res_config
 from . import res_currency
 from . import res_company
-from custom_addons.estate.models import estate_property
 from . import res_users
 from . import res_users_settings
 from . import res_users_deletion
