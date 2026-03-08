@@ -1,0 +1,8 @@
+<odoo>
+    <menuitem id="menu_root" name="Clínica Veterinaria">
+        <menuitem id="veterinary_clinic_menu" name="Clínica Veterinaria">
+            <menuitem id="veterinary_appointment_menu_action" action="veterinary_appointment_action"/>
+            <menuitem id="veterinary_patient_menu_action" action="veterinary_patient_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>

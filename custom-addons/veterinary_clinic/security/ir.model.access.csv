@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_veterinary_patient,veterinary_patient,model_veterinary_patient,base.group_user,1,1,1,1
+access_veterinary_appointment,veterinary_appointment,model_veterinary_appointment,base.group_user,1,1,1,1
+access_res_partner,res_partner,model_res_partner,base.group_user,1,1,1,1

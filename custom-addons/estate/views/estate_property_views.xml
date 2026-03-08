@@ -131,20 +131,20 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" groups_draggable="false">
-            <field name="state"/>
-            <field name="offers_ids"/>
-            <field name="property_type_id"/>
-                <templates>
-                    <t t-name="kanban-box">
-                        <div class="oe_kanban_global_click">
-                            <field name="name"/>
-                            <field name="expected_price"/>
-                            <field name="best_price" invisible="not offers_ids"/>
-                            <field name="selling_price" invisible="state != 'offer_accepted'"/>
-                            <field name="tag_ids"/>
-                        </div>
-                    </t>
-                </templates>
+                <field name="state"/>
+                <field name="offers_ids"/>
+                <field name="property_type_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <field name="name"/>
+                                <field name="expected_price"/>
+                                <field name="best_price" invisible="not offers_ids"/>
+                                <field name="selling_price" invisible="state != 'offer_accepted'"/>
+                                <field name="tag_ids"/>
+                            </div>
+                        </t>
+                    </templates>
             </kanban>
         </field>
     </record>

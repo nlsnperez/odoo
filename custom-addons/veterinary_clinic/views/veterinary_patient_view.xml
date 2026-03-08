@@ -1,0 +1,138 @@
+<odoo>
+    <!-- ACCIÓN PRINCIPAL -->
+    <record id="veterinary_patient_action" model="ir.actions.act_window">
+        <field name="name">PACIENTES</field>
+        <field name="res_model">veterinary.patient</field>
+        <field name="view_mode">tree,form,kanban</field>        
+    </record>
+
+    <!-- VISTA DEL FORMULARIO     -->
+    <record id="veterinary_patient_form" model="ir.ui.view">
+        <field name="name">veterinary.patient.form</field>
+        <field name="model">veterinary.patient</field>
+        <field name="arch" type="xml">
+            <form string="Paciente">
+                <sheet>
+                    <div class="oe_edit_only">
+                    <label for="name" string="Nombre del paciente"/>
+                </div>
+                <h1 class="mb32">
+                    <field name="name" placeholder="Ej. Levi"/>
+                </h1>
+                    <notebook>
+                        <page string="Información general">
+                            <group>
+                                <field name="species"/>
+                                <field name="breed"/>
+                                <field name="color"/>
+                                <field name="gender"/>
+                            </group>
+                        </page>
+                        <page string="Información de edad">
+                            <group>
+                                <field name="birth_date"/>
+                                <field name="age"/>
+                                <field name="is_deceased"/>
+                                <field name="death_date" invisible="not is_deceased"/>
+                            </group>
+                        </page>
+                        <page string="Contacto">
+                            <group>
+                                <field name="is_stray"/>
+                                <field name="owner_id" invisible="is_stray"/>
+                                <field name="veterinarian_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- VISTA DE LA TABLA -->
+    <record id="veterinary_patient_tree" model="ir.ui.view">
+        <field name="name">veterinary.patient.tree</field>
+        <field name="model">veterinary.patient</field>
+        <field name="arch" type="xml">
+            <tree string="Pacientes registrados" decoration-danger="not owner_id">
+                <field name="name"/>
+                <field name="species"/>
+                <field name="breed"/>
+                <field name="color"/>
+                <field name="gender"/>
+                <field name="owner_id"/>
+                <field name="veterinarian_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- VISTA KANBAN -->
+    <record id="veterinary_patient_kanban" model="ir.ui.view">
+        <field name="name">veterinary.patient.kanban</field>
+        <field name="model">veterinary.patient</field>
+        <field name="arch" type="xml">
+            <kanban string="Pacientes registrados" default_group_by="species" groups_draggable="false">
+                <template>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <strong class="oe_kanban_title">
+                                <field name="name"/>
+                            </strong>
+                            <hr class="mb8"/>
+                            <div>
+                                <div>
+                                    <i class="fa fa-paw" title="Especie"/> <strong>Especie:</strong> <field name="species"/>
+                                </div>
+                                <div>
+                                    <i class="fa fa-paw" title="Raza"/> <strong>Raza:</strong> <field name="breed"/>
+                                </div>
+                                <t t-if="record.owner_id.raw_value">
+                                    <div>
+                                        <i class="fa fa-user" title="Dueño"/> <strong>Dueño:</strong> <field name="owner_id"/>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <i class="fa fa-paw" title="Dueño"/> <span class="text-muted">Callejero</span>
+                                </t>
+                                <div>
+                                    <i class="fa fa-user" title="Veterinario"/> <strong>Veterinario:</strong> <field name="veterinarian_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>                    
+                </template>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- BÚSQUEDA -->
+    <record id="veterinary_patient_view_search" model="ir.ui.view">
+        <field name="name">veterinary.patient.search</field>
+        <field name="model">veterinary.patient</field>
+        <field name="arch" type="xml">
+            <search string="search_veterinary_patient">
+                <!-- CAMPOS DE BÚSQUEDA -->
+                <field name="name"></field>
+                <field name="species"></field>
+                <field name="breed"></field>
+                <field name="owner_id"></field>
+                <field name="veterinarian_id"></field>
+
+                <!-- FILTROS -->
+                <filter name="infant_filter" string="Infantes (EDADES DE 0 A 5 AÑOS)" domain="[('age', '&gt;=', 0), ('age', '&lt;=', 5)]"/>
+                <filter name="juvenile_filter" string="Juveniles (EDADES DE 6 A 17 AÑOS)" domain="[('age', '&gt;', 5), ('age', '&lt;=', 17)]"/>
+                <filter name="adult_filter" string="Adultos (EDADES DE 18 EN ADELANTE)" domain="[('age', '&gt;', 18)]"/>
+                <filter name="is_stray_filter" string="Callejeros" domain="[('is_stray', '=', True)]"/>
+                <filter name="is_deceased_filter" string="Fallecidos" domain="[('is_deceased', '=', True)]"/>
+
+                <!-- AGRUPACIONES -->
+                <filter name="group_by_species" string="Agrupar por especie" context="{'group_by': 'species'}"/>
+                <filter name="group_by_breed" string="Agrupar por raza" context="{'group_by': 'breed'}"/>
+                <filter name="group_by_gender" string="Agrupar por género" context="{'group_by': 'gender'}"/>
+                <filter name="group_by_owner_id" string="Agrupar por dueño" context="{'group_by': 'owner_id'}"/>
+                <filter name="group_by_veterinarian_id" string="Agrupar por veterinario" context="{'group_by': 'veterinarian_id'}"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

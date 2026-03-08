@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ACCIÓN PRINCIPAL -->
+    <record id="veterinary_appointment_action" model="ir.actions.act_window">
+        <field name="name">CITAS</field>
+        <field name="res_model">veterinary.appointment</field>
+        <field name="view_mode">tree,form</field>        
+    </record>
+
+    <!-- VISTA DEL FORMULARIO -->
+    <record id="veterinary_appointment_form" model="ir.ui.view">
+        <field name="name">veterinary.appointment.form</field>
+        <field name="model">veterinary.appointment</field>
+        <field name="arch" type="xml">
+            <form string="Cita veterinaria">
+                <sheet>
+                    <div class="oe_edit_only">
+                    <label for="name" string="Referencia"/>
+                </div>
+                <h1 class="mb32">
+                    <field name="name"/>
+                </h1>
+                    <notebook>
+                        <page string="Información general">
+                            <group>
+                                <field name="active"/>
+                                <field name="priority"/>
+                            </group>
+                        </page>
+                        <page string="Datos del paciente">
+                            <group>
+                                <field name="patient_id"/>
+                                <field name="owner_id"/>
+                                <field name="veterinarian_id"/>
+                            </group>
+                        </page>
+                        <page string="Fecha y hora">
+                            <group>
+                                <field name="appointment_date"/>
+                                <field name="appointment_time"/>
+                                <field name="duration"/>
+                                <field name="end_time"/>
+                            </group>
+                        </page>
+                        <page string="Estado de la cita">
+                            <group>
+                                <field name="state"/>
+                                <field name="cancelled_by_id" invisible="state != 'cancelled'"/>
+                                <field name="cancelled_date" invisible="state != 'cancelled'"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
